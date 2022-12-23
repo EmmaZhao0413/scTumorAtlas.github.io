@@ -14,8 +14,10 @@ app.config['TESTING'] = True
 # app.config["MONGODB_HOST"] = DB_URI
 bootstrap = Bootstrap(app)
 config.init_app(app)
-config.init_db(app)
+# config.init_db(app)
 config.init_cors(app)
+
+api = Api(app)
 
 @app.route("/", defaults={'path': ''})
 @app.route('/<path:path>')
