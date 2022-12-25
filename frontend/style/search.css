@@ -1,0 +1,23 @@
+#home-page-introduction{
+	background-color: rgba(255,255,255,0.7);
+	margin:40px 40px;
+	font-family:"Gill Sans MT";
+	position:middle;
+	font-size: 18px;
+}
+#home-page-feedback-text{
+	margin-top: 20px;
+	font-style:italic;
+	color:rgba(53,53,53,0.705);
+}
+#comparison-page-introduction{
+	background-color: rgba(255,255,255,0.7);
+	margin:40px 40px;
+	font-family:"Gills Sans MT";
+	position:middle;
+	font-size:20px;
+}
+
+h3 {
+    margin:10px 40px;
+}

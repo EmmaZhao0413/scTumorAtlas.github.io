@@ -4,6 +4,8 @@ from flask_restful import Api
 import os
 from flask_bootstrap import Bootstrap
 import config
+import model
+# import controller
 
 app = Flask(__name__, static_folder='frontend')#, instance_relative_config=True)
 app.config['ENV'] = 'development'
@@ -22,10 +24,21 @@ api = Api(app)
 @app.route("/", defaults={'path': ''})
 @app.route('/<path:path>')
 def serve(path):
+    print(path)
+    if path == "about":
+        return send_from_directory(app.static_folder, path+'.html')
     if path != "" and os.path.exists(app.static_folder + '/' + path):
         return send_from_directory(app.static_folder, path)
     else:
         return send_from_directory(app.static_folder, 'index.html')
+
+@app.route('/search',methods=['GET','POST'])
+def search_page():
+    # build search form by request
+    search = model.DatabaseForm(request.form)
+    # if request.method=='POST':
+    #     return controller.search_database(search)
+    return render_template('search.html',form=search)
 
 
 if __name__ == '__main__':

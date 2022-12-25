@@ -4,7 +4,7 @@
 <link href='https://fonts.googleapis.com/css?family=Fredoka One' rel='stylesheet'>
 
 <link rel="stylesheet" type="text/css" href="style/common.css">
-<!-- <link rel="stylesheet" type="text/css" href="home.css"> -->
+<link rel="stylesheet" type="text/css" href="style/home.css">
 <style>
     body {
       margin: 0;
@@ -15,22 +15,195 @@
 {% block navbar %} -->
 <head>
 <body>
-<div class="navbar" role="navigation">
-   <!-- <div class="container">-->
-	<img src="logo.jpg" class="img-fluid"/>
-
-        <a class="navbar-brand-top" href="/home/" style="text-decoration:none;">
+<nav class="navbar">
+   <div class="container">
+    <!-- <a class="navbar-brand" href="/"> -->
+        <img src="logo.jpg"  class="img-fluid"/>
+    <!-- </a> -->
+	
+    <!-- <button class="navbar-toggler" type="button" data-toggle="collapse"  data-target="#codebrainery-toggle-nav">
+        <span class="navbar-toggler-icon"></span>
+    </button> -->
+    <!-- <div class="navbar-collapse"  id="codebrainery-toggle-nav"> -->
+        <a class="navbar-brand-top" href="/" style="text-decoration:none;">
             <i class="fa fa-home" style="margin-right: 5px;"></i>
             Home </a>
-	    <a class="navbar-brand-top" href="/search">
+        <a class="navbar-brand-top" href="/search">
             <i class="fa fa-search" style="margin-right: 5px;"></i>
             Search</a>
-	    <a class="navbar-brand-top" href="/about/"> 
+        <a class="navbar-brand-top" href="/download">
+            <i class="fa fa-download" style="margin-right: 5px;"></i>
+            Download</a>
+        <a class="navbar-brand-top" href="/about"> 
             <i class="fa fa-info-circle" style="margin-right: 5px;"></i>
             About</a>
-        
-	<!-- </div> -->
+    <!-- </div> -->
+	</div>
     
-</div>
+</nav>
 </head>
+<style>
+    /* Create two unequal columns that floats next to each other */
+    .column {
+      margin: 0px 40px;
+      float: left;
+    }
+    
+    .left {
+      width: 25%;
+    }
+    
+    .right {
+      width: 50%;
+    }
+    
+    /* Clear floats after the columns */
+    .row:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+</style>
+
+<h3>    
+Welcome to scTumorAtlas
+</h3>
+<div class="common-page-form"> scTumorAtlas is a website for genomic and transcriptomic database</div>
+
+<!-- <div class="graph-container"> -->
+    
+    <div class="row">
+        <div class="column left">
+        <h4>Cancer Type</h4>
+            <div class="cancer-types" style="height: 200px; overflow: auto;">
+                <li class="accordion-item" data-accordion-item>
+                    <a class="cancer-type-item" role="tab">
+                        GBM
+                    </a>
+                </li>
+                <li class="accordion-item" data-accordion-item>
+                    <a class="cancer-type-item" role="tab">
+                        BRCA
+                    </a>
+                </li>
+                <li class="accordion-item" data-accordion-item>
+                    <a class="cancer-type-item" role="tab">
+                        LCML
+                    </a>
+                </li>
+                <li class="accordion-item" data-accordion-item>
+                    <a class="cancer-type-item" role="tab">
+                        OSCC
+                    </a>
+                </li>
+                <li class="accordion-item" data-accordion-item>
+                    <a class="cancer-type-item" role="tab">
+                        SKCM
+                    </a>
+                </li>
+                <li class="accordion-item" data-accordion-item>
+                    <a class="cancer-type-item" role="tab">
+                        CRC
+                    </a>
+                </li>
+                <li class="accordion-item" data-accordion-item>
+                    <a class="cancer-type-item" role="tab">
+                        MM
+                    </a>
+                </li>
+                <li class="accordion-item" data-accordion-item>
+                    <a class="cancer-type-item" role="tab">
+                        ALL
+                    </a>
+                </li>
+                <li class="accordion-item" data-accordion-item>
+                    <a class="cancer-type-item" role="tab">
+                        LGG
+                    </a>
+                </li>
+                <li class="accordion-item" data-accordion-item>
+                    <a class="cancer-type-item" role="tab">
+                        LUAD
+                    </a>
+                </li>
+                <li class="accordion-item" data-accordion-item>
+                    <a class="cancer-type-item" role="tab">
+                        ESCA
+                    </a>
+                </li>
+                <li class="accordion-item" data-accordion-item>
+                    <a class="cancer-type-item" role="tab">
+                        PRAD
+                    </a>
+                </li>
+                <li class="accordion-item" data-accordion-item>
+                    <a class="cancer-type-item" role="tab">
+                        LIHC
+                    </a>
+                </li>
+                <li class="accordion-item" data-accordion-item>
+                    <a class="cancer-type-item" role="tab">
+                        PAAD
+                    </a>
+                </li>
+                <li class="accordion-item" data-accordion-item>
+                    <a class="cancer-type-item" role="tab">
+                        HCC
+                    </a>
+                </li>
+                <li class="accordion-item" data-accordion-item>
+                    <a class="cancer-type-item" role="tab">
+                        KIRC
+                    </a>
+                </li>
+                <li class="accordion-item" data-accordion-item>
+                    <a class="cancer-type-item" role="tab">
+                        LUSC
+                    </a>
+                </li>
+            </div>
+            <h4>Source</h4>
+            <div class="source" style="height: 100px; overflow: auto;">
+                <li class="accordion-item" data-accordion-item>
+                    <a class="cancer-type-item" role="tab">
+                        cell line
+                    </a>
+                </li>
+                <li class="accordion-item" data-accordion-item>
+                    <a class="cancer-type-item" role="tab">
+                        CTC
+                    </a>
+                </li>
+                <li class="accordion-item" data-accordion-item>
+                    <a class="cancer-type-item" role="tab">
+                        PDX
+                    </a>
+                </li>
+                <li class="accordion-item" data-accordion-item>
+                    <a class="cancer-type-item" role="tab">
+                        tissue
+                    </a>
+                </li>
+            </div>
+            <h4>Metastasis</h4>
+            <div class="metastasis" style="height: 100px; overflow: auto;">
+                <li class="accordion-item" data-accordion-item>
+                    <a class="cancer-type-item" role="tab">
+                        metastasis
+                    </a>
+                </li>
+                <li class="accordion-item" data-accordion-item>
+                    <a class="cancer-type-item" role="tab">
+                        primary
+                    </a>
+                </li>
+            </div>
+        </div>
+        <div class="column right">
+            <h4> single cell genomics distribution </h4>
+            <img src="graphB.png"  class="graphB"/>
+        </div>
+  </div>
+
+
 </body>

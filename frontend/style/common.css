@@ -1,17 +1,20 @@
 
 .navbar {
-	height: 65px;
+	/* height: 65px; */
 	background: rgba(8,8,106,1);
 	text-decoration: none;
 }
 .navbar-brand-top{
 	color: white;
-	padding: 10px 20px;
+	padding: 10px 10px;
 	padding-top: 15px;
-	font-family: "Fredoka One";
+	font-family: "Segoe UI";
 	font-size: 20px;
 	letter-spacing: 3px;
 	text-decoration: none;
+}
+.navbar-toggler {
+	position: right;
 }
 .img-fluid {
 	/* padding-top: 10px;
@@ -21,13 +24,21 @@
 	vertical-align: middle;
 	max-width: 30%;
 }
+.graphB {
+	margin: 0px 40px;
+	max-width: 50%;
+}
 .main-text {
 	padding: 40px;
 }
 h3 {
-	font-family:'Fredoka One';
+	font-family:'Segoe UI';
 	font-size:25px;
-	text-decoration:underline;
+	margin-left: 40px;
+	margin-bottom: 0px;
+	/* text-decoration:underline; */
+	color: rgba(8,8,106,1);
+	/* background-color: white; */
 }
 .common-page-heading-container {
 	text-align: center;
@@ -39,7 +50,7 @@ h3 {
 
 .common-page-form select, input {
 	background-color:white;
-	border-radius: 5px;
+	/* border-radius: 5px; */
 	border-color: transparent;
 }
 
@@ -51,18 +62,22 @@ h3 {
 }
 
 .common-page-form {
-	background-color: rgba(255,255,255,0.7);
+	/* background-color: rgba(8, 8, 106, 0.1); */
 	border-width: 2px;
-	border-style: solid;
-	border-color: #00204E;
-	border-radius: 20px;
+	/* border-style: solid; */
+	/* border-color: #00204E; */
+	/* border-radius: 20px; */
 	padding: 20px;
-	margin: 20px 40px;
-	text-align: center;
+	margin: 0px 20px;
+	text-align: left;
 	font-family: "Times New Roman";
 	font-size: 20px;
 }
 
 .common-page-sumbit-btn {
 	margin-top: 20px;
+}
+
+.common-page-form-container {
+	margin: 0px 0px;
 }

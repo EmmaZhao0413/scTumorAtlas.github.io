@@ -1,0 +1,54 @@
+<!doctype html>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href='https://fonts.googleapis.com/css?family=Fredoka One' rel='stylesheet'>
+<link rel="stylesheet" type="text/css" href="style/common.css">
+<link rel="stylesheet" type="text/css" href="style/search.css">
+<style>
+    body {
+      margin: 0;
+    }
+</style>
+<head>
+    <body>
+    <div class="navbar" role="navigation">
+        <img src="logo.jpg"  class="img-fluid"/>
+            <a class="navbar-brand-top" href="/" style="text-decoration:none;">
+                <i class="fa fa-home" style="margin-right: 5px;"></i>
+                Home </a>
+            <a class="navbar-brand-top" href="/search">
+                <i class="fa fa-search" style="margin-right: 5px;"></i>
+                Search</a>
+            <a class="navbar-brand-top" href="/download">
+                <i class="fa fa-download" style="margin-right: 5px;"></i>
+                Download</a>
+            <a class="navbar-brand-top" href="/about"> 
+                <i class="fa fa-info-circle" style="margin-right: 5px;"></i>
+                About</a>        
+    </div>
+</head>
+
+
+<!-- {% from "_formhelpers.html" import render_field %} -->
+<h3> Search for database </h3>
+<form method="post" class="common-page-form">
+  <div class="common-page-form-container">
+    {{ render_field(form.cancer_type) }}
+    <p>
+    {{ render_field(form.source) }}
+    </p> 
+    <p>
+    {{ render_field(form.metastasis) }}
+    </p>
+    <p>
+    {{ render_field(form.alteration_type) }}
+   </p>
+  </div> <button type="submit" class="btn btn-primary common-page-submit-btn">Search</button>
+</form>
+<h3 id="result-title"> Search Results </h3>
+<div id="results-page-table-container">
+{% for table in tables %}
+            {{ table|safe }}
+</div>
+{% endfor %}
+</body>
+</doctype>
