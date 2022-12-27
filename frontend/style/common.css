@@ -24,10 +24,6 @@
 	vertical-align: middle;
 	max-width: 30%;
 }
-.graphB {
-	margin: 0px 40px;
-	max-width: 50%;
-}
 .main-text {
 	padding: 40px;
 }
@@ -46,6 +42,7 @@ h3 {
 	margin-bottom: 20px;
 	margin-left: auto;
 	margin-right: auto;
+	font-size: 20px;
 }
 
 .common-page-form select, input {
@@ -58,7 +55,7 @@ h3 {
 	margin: 2px auto;
 	text-align: center;
 	font-family: "Times New Roman";
-	font-size: 10px;
+	font-size: 20px;
 }
 
 .common-page-form {
@@ -69,6 +66,8 @@ h3 {
 	/* border-radius: 20px; */
 	padding: 20px;
 	margin: 0px 20px;
+	padding-top: 0px;
+	padding-bottom: 0px;
 	text-align: left;
 	font-family: "Times New Roman";
 	font-size: 20px;

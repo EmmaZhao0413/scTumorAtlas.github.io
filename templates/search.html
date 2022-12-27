@@ -7,6 +7,29 @@
     body {
       margin: 0;
     }
+    h3 {
+        background-color: rgba(8,8,106,0.3);
+        text-align: center;
+        margin-bottom: 0px;
+    }
+    * {
+        box-sizing: border-box;
+    }
+
+    /* Create four equal columns that floats next to each other */
+    .column {
+        float: left;
+        width: 25%;
+        padding: 0px;
+        height: 75px; /* Should be removed. Only for demonstration */
+    }
+
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
 </style>
 <head>
     <body>
@@ -31,24 +54,34 @@
 <!-- {% from "_formhelpers.html" import render_field %} -->
 <h3> Search for database </h3>
 <form method="post" class="common-page-form">
-  <div class="common-page-form-container">
-    {{ render_field(form.cancer_type) }}
-    <p>
-    {{ render_field(form.source) }}
-    </p> 
-    <p>
-    {{ render_field(form.metastasis) }}
-    </p>
-    <p>
-    {{ render_field(form.alteration_type) }}
-   </p>
-  </div> <button type="submit" class="btn btn-primary common-page-submit-btn">Search</button>
+    <div class="row">
+        <div class="column">
+            {{ render_field(form.cancer_type) }}
+        </div>
+        <div class="column">
+            {{ render_field(form.source) }}
+        </div>
+        <div class="column">
+            {{ render_field(form.metastasis) }}
+        </div>
+        <div class="column">
+            {{ render_field(form.alteration_type) }}
+        </div>
+        <button type="submit" class="btn btn-primary common-page-submit-btn">Search</button>
+    </div>
 </form>
 <h3 id="result-title"> Search Results </h3>
-<div id="results-page-table-container">
-{% for table in tables %}
-            {{ table|safe }}
-</div>
+<form method="post" id="results-page-table-container">
+    {% for table in table1 %}
+        {{table|safe}}
+    {% endfor %}
+    <button type="submit" class="btn btn-secondary common-page-submit-btn" style="margin-left: 40px">Compare</button>
+</form>
+{% if first_graph != null %}
+<h3> Comparison of Two Datasets </h3>
+{% endif %}
+{% for table in table2 %}
+    {{ table|safe }}
 {% endfor %}
 </body>
 </doctype>

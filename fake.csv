@@ -1,0 +1,4 @@
+checkbox,dataset_name,cancer_type,source,metastasis,alteration_type
+<input type="checkbox" name="first" value='1'>,<a href=/dataset/first>first</a>,BRCA,cell line,metastasis,SNV
+<input type="checkbox" name="first" value='2'>,second,ALL,tissue,primary,CNV
+<input type="checkbox" name="first" value='2'>,third,LUAD,PDX,primary,Splicing
