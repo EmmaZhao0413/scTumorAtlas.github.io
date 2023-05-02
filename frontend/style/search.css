@@ -23,7 +23,7 @@ h3 {
 }
 
 #results-page-table-container{
-	margin: 0px auto;
+	margin: 20px auto;
 	background-color: rgba(255,255,255,.8);
 }
 
@@ -51,6 +51,10 @@ h3 {
 }
 #results-page-table-container table:last-child{
 	border-right: 1px solid #00204E;
+}
+
+.compare_graph {
+	max-width: 100%;
 }
 /* #result-title {
 	color: black;

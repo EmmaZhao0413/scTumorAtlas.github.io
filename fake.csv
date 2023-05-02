@@ -1,4 +1,3 @@
-checkbox,dataset_name,cancer_type,source,metastasis,alteration_type
-<input type="checkbox" name="first" value='1'>,<a href=/dataset/first>first</a>,BRCA,cell line,metastasis,SNV
-<input type="checkbox" name="first" value='2'>,second,ALL,tissue,primary,CNV
-<input type="checkbox" name="first" value='2'>,third,LUAD,PDX,primary,Splicing
+checkbox,dataset_name,cancer_type,cell_type,source,metastasis,number of cells
+<input type="checkbox" name="GSE83142" value='1'>,<a href=/dataset/GSE83142>GSE83142</a>,ALL,cell line,T/NK cell, metastasis,215 
+<input type="checkbox" name="GSE161896" value='2'>,<a href=/dataset/GSE161896>GSE161896</a>,ALL,tissue,B/Plasma cell, primary, 816

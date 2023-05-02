@@ -3,7 +3,14 @@ import pandas as pd
 
 
 class DatabaseForm(Form):
+    # gene = [
+    #     ('Any', 'Any'),
+    #     ('ENST001','ENST001'),
+    #     ('ENST002','ENST002'),
+    #     ('ENST003','ENST003'),
+    # ]
     cancer_type = [
+        ('Any', 'Any'),
         ('GBM','GBM'),
         ('BRCA','BRCA'),
         ('LCML','LCML'),
@@ -23,23 +30,19 @@ class DatabaseForm(Form):
         ('LUSC','LUSC')
     ]            
     source = [
+        ('Any', 'Any'),
         ('cell line', 'cell line'),
         ('CTC', 'CTC'),
         ('PDX', 'PDX'),
         ('tissue', 'tissue')
     ]           
     metastasis = [
+        ('Any', 'Any'),
         ('metastasis', 'metastasis'),
         ('primary', 'primary')
     ]
-    alteration_type = [
-        ('SNV','SNV'),
-        ('CNV','CNV'),
-        ('Splicing','Splicing'),
-        ('Gene Fusion','Gene Fusion')
-    ]
 
+    gene = StringField('Gene:')
     cancer_type = SelectField('Cancer Type:', choices=cancer_type)
     source = SelectField('Cancer Source:', choices=source)
     metastasis = SelectField('Metastasis:', choices=metastasis)
-    alteration_type = SelectField('Alteration Type:', choices=alteration_type)

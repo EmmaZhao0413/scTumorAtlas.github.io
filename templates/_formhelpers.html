@@ -3,3 +3,8 @@
         <b>{{ field.label }}</b><br> {{ field(**kwargs)|safe }}
     {% endmacro %}
 </div> 
+<div id="search-page-form-field">
+    {% macro render_field_search(field) %}
+        <b>{{ field.label }}</b> {{ field(**kwargs)|safe }}
+    {% endmacro %}
+</div> 

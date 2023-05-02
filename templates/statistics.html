@@ -1,0 +1,384 @@
+<!doctype html>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href='https://fonts.googleapis.com/css?family=Fredoka One' rel='stylesheet'>
+<link rel="stylesheet" type="text/css" href="style/common.css">
+<link rel="stylesheet" type="text/css" href="style/search.css">
+<style>
+    body {
+      margin: 0;
+    }
+    h3 {
+        background-color: rgba(8,8,106,0.3);
+        text-align: center;
+        margin-bottom: 0px;
+    }
+    * {
+        box-sizing: border-box;
+    }
+
+    /* Create four equal columns that floats next to each other */
+    .column {
+      margin: 20px 40px;
+      float: left;
+    }
+    .left {
+        /* background-color: rgba(8,8,106,0.1); */
+      width: 25%;
+    }
+    
+    .right {
+      width: 60%;
+    }
+    .column_compare_graph {
+        float: left;
+        width: 50%;
+        padding: 0px;
+        height: 200px;
+    }
+
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+    h4 {
+        background-color: rgba(8,8,106,0.3);
+        font-size: 20px;
+        text-align: center;
+        margin:0px;
+    }
+    svg {
+        overflow: hidden;
+        vertical-align: middle;
+    }
+    .graphB{
+        /* margin-top: 500px; */
+        margin-left: 50px;
+    }
+</style>
+<head>
+    <body>
+    <div class="navbar" role="navigation">
+        <img src="logo.jpg"  class="img-fluid"/>
+        <a class="navbar-brand-top" href="/" style="text-decoration:none;">
+            <i class="fa fa-home" style="margin-right: 5px;"></i>
+            Home </a>
+        <a class="navbar-brand-top" href="/search_dataset">
+            <i class="fa fa-database" style="margin-right: 5px;"></i>
+            Dataset</a>
+        <a class="navbar-brand-top" href="/gene">
+            <i class="fa fa-search" style="margin-right: 5px;"></i>
+            Gene</a>
+        <a class="navbar-brand-top" href="/statistics">
+            <i class="fa fa-bar-chart" style="margin-right: 5px;"></i>
+            Statistics</a>
+        <a class="navbar-brand-top" href="/help"> 
+            <i class="fa fa-info-circle" style="margin-right: 5px;"></i>
+            Help</a>      
+    </div>
+</head>
+
+
+<!-- {% from "_formhelpers.html" import render_field %} -->
+<h3> Search for database </h3>
+<div class="row">
+    <div class="column left">
+    <h4>Cancer Type</h4>
+        <div class="cancer-types" style="height: 300px; overflow: auto;">
+            <li class="accordion-item" data-accordion-item>
+                <a class="cancer-type-item tissue-row" role="tab" id="GBM-row">
+                    GBM
+                </a>
+            </li>
+            <li class="accordion-item" data-accordion-item>
+                <a class="cancer-type-item" role="tab">
+                    BRCA
+                </a>
+            </li>
+            <li class="accordion-item" data-accordion-item>
+                <a class="cancer-type-item" role="tab">
+                    LCML
+                </a>
+            </li>
+            <li class="accordion-item" data-accordion-item>
+                <a class="cancer-type-item" role="tab">
+                    OSCC
+                </a>
+            </li>
+            <li class="accordion-item" data-accordion-item>
+                <a class="cancer-type-item" role="tab">
+                    SKCM
+                </a>
+            </li>
+            <li class="accordion-item" data-accordion-item>
+                <a class="cancer-type-item" role="tab">
+                    CRC
+                </a>
+            </li>
+            <li class="accordion-item" data-accordion-item>
+                <a class="cancer-type-item" role="tab">
+                    MM
+                </a>
+            </li>
+            <li class="accordion-item" data-accordion-item>
+                <a class="cancer-type-item" role="tab">
+                    ALL
+                </a>
+            </li>
+            <li class="accordion-item" data-accordion-item>
+                <a class="cancer-type-item" role="tab">
+                    LGG
+                </a>
+            </li>
+            <li class="accordion-item" data-accordion-item>
+                <a class="cancer-type-item" role="tab">
+                    LUAD
+                </a>
+            </li>
+            <li class="accordion-item" data-accordion-item>
+                <a class="cancer-type-item" role="tab">
+                    ESCA
+                </a>
+            </li>
+            <li class="accordion-item" data-accordion-item>
+                <a class="cancer-type-item" role="tab">
+                    PRAD
+                </a>
+            </li>
+            <li class="accordion-item" data-accordion-item>
+                <a class="cancer-type-item" role="tab">
+                    LIHC
+                </a>
+            </li>
+            <li class="accordion-item" data-accordion-item>
+                <a class="cancer-type-item" role="tab">
+                    PAAD
+                </a>
+            </li>
+            <li class="accordion-item" data-accordion-item>
+                <a class="cancer-type-item" role="tab">
+                    HCC
+                </a>
+            </li>
+            <li class="accordion-item" data-accordion-item>
+                <a class="cancer-type-item" role="tab">
+                    KIRC
+                </a>
+            </li>
+            <li class="accordion-item" data-accordion-item>
+                <a class="cancer-type-item" role="tab">
+                    LUSC
+                </a>
+            </li>
+        </div>
+        <h4>Source</h4>
+        <div class="source" style="height: 100px; overflow: auto;">
+            <li class="accordion-item" data-accordion-item>
+                <a class="cancer-type-item" role="tab">
+                    cell line
+                </a>
+            </li>
+            <li class="accordion-item" data-accordion-item>
+                <a class="cancer-type-item" role="tab">
+                    CTC
+                </a>
+            </li>
+            <li class="accordion-item" data-accordion-item>
+                <a class="cancer-type-item" role="tab">
+                    PDX
+                </a>
+            </li>
+            <li class="accordion-item" data-accordion-item>
+                <a class="cancer-type-item" role="tab">
+                    tissue
+                </a>
+            </li>
+        </div>
+        <h4>Metastasis</h4>
+        <div class="metastasis" style="height: 100px; overflow: auto;">
+            <li class="accordion-item" data-accordion-item>
+                <a class="cancer-type-item" role="tab">
+                    metastasis
+                </a>
+            </li>
+            <li class="accordion-item" data-accordion-item>
+                <a class="cancer-type-item" role="tab">
+                    primary
+                </a>
+            </li>
+        </div>
+    </div>
+    <div class="column right">
+        <h4> Single Cell Genomics Distribution </h4>
+        <img src="graphB.png"  class="graphB" style="display: block; width:650px; height:500px; top:0; bottom:0;"/>
+        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1859 1666" style="enable-background:new 100 100 26944 23604; position: absolute; z-index: 999; width:1286px; height:1529px; top: 0; bottom: 0" xml:space="preserve">
+            <style type="text/css">
+            .st0 {
+                opacity: 1;
+                fill: #9b6161;
+            }
+
+            .st1 {
+                opacity: 0;
+                fill: #99CED3;
+            }
+
+            .st2 {
+                opacity: 0;
+                fill: #99CED3;
+            }
+            </style>
+            <polygon id="GBM-highlight" class="st0 highlight" points="445,45 445,115 485,120 525,130 565,145 595,160 615,185 630,300 655,325 740,405 775,390 820,375 
+            710,280 700,275 750,245 725,210 710,220 695,210 675,155 615,100 595,85 555,65 535,60 515,53" />
+        </svg>
+    </div>
+<!-- <form method="post" class="common-page-form">
+    <div class="row">
+            <div class="column">
+                {{ render_field(form.cancer_type) }}
+            </div>
+            <div class="column">
+                {{ render_field(form.source) }}
+            </div>
+            <div class="column">
+                {{ render_field(form.metastasis) }}
+            </div>
+            <div class="column">
+                {{ render_field(form.alteration_type) }}
+            </div>
+            <button type="submit" class="btn btn-tisch common-page-submit-btn">Search</button>
+    </div>
+</form> -->
+</div>
+<h3 id="result-title"> Search Results </h3>
+<form method="post" id="results-page-table-container">
+    {% for table in table1 %}
+        {{table|safe}}
+    {% endfor %}
+    <button type="submit" class="btn btn-secondary common-page-submit-btn" style="margin-left: 40px">Compare</button>
+</form>
+
+
+{% if first_graph != null %}
+<h3> Comparison of Two Datasets </h3>
+<form method="post" class="common-page-form">
+    <div class="row">
+        <div class="column_compare_graph" style="height: 400px; overflow: auto;">
+            <img src="{{ first_graph }}" class="compare_graph"/>
+        </div>
+        <div class="column_compare_graph" style="height: 400px; overflow: auto;">
+            <img src="{{ second_graph }}" class="compare_graph"/>
+        </div>
+    </div>
+</form>
+{% endif %}
+{% for table in table2 %}
+    {{ table|safe }}
+{% endfor %}
+<script src="/static/js/jquery-3.4.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script type="text/javascript">
+
+$(".highlight").each(function() {
+    var tissue = $(this).attr("id").split("-")[0];
+    document.getElementById($(this).attr("id")).addEventListener("mouseenter", function() {
+        $(this).css('opacity', 0.6);
+        // $("#brain-row").css('background-color', "rgba(153,206,211,0.5)");
+        // $("#brain-row").css('background-color', "rgba(109,121,147,0.2)");
+        if (tissue == "ovary" || tissue == "uterus") {
+            // document.getElementById("pelvic-row").style.backgroundColor = "rgba(247,245,230,1)";
+            document.getElementById("pelvic-row").style.backgroundColor = "rgba(109,121,147,0.2)";
+            document.getElementById("pelvic-row").style.borderRadius = "0.5rem";
+        } else {
+            document.getElementById(tissue + "-row").style.backgroundColor = "rgba(109,121,147,0.2)";
+            document.getElementById(tissue + "-row").style.borderRadius = "0.5rem";
+        }
+    });
+});
+$(".highlight").each(function() {
+    var tissue = $(this).attr("id").split("-")[0];
+    document.getElementById($(this).attr("id")).addEventListener("mouseleave", function() {
+        $(this).css('opacity', 0);
+        // $("#brain-row").css('background-color', "rgba(153,206,211,0.5)");
+        // $("#brain-row").css('background-color', "rgba(109,121,147,0.2)");
+        if (tissue == "ovary" || tissue == "uterus") {
+            document.getElementById("pelvic-row").style.backgroundColor = "rgba(109,121,147,0)";
+            document.getElementById("pelvic-row").style.borderRadius = "0.5rem";
+        } else {
+            document.getElementById(tissue + "-row").style.backgroundColor = "rgba(109,121,147,0)";
+            document.getElementById(tissue + "-row").style.borderRadius = "0.5rem";
+        }
+    });
+});
+
+$(".tissue-row").each(function() {
+    var tissue = $(this).attr("id").split("-")[0];
+    document.getElementById($(this).attr("id")).addEventListener("mouseenter", function() {
+        $(this).css('background-color', "rgba(109,121,147,0.2)");
+        $(this).css('border-radius', "0.5rem");
+        // $("#brain-row").css('background-color', "rgba(153,206,211,0.5)");
+        // $("#brain-row").css('background-color', "rgba(109,121,147,0.2)");
+        if (tissue == "pelvic") {
+            // document.getElementById("pelvic-row").style.backgroundColor = "rgba(247,245,230,1)";
+            document.getElementById("ovary-highlight").style.opacity = 0.6;
+            document.getElementById("uterus-highlight").style.opacity = 0.6;
+        } else {
+            document.getElementById(tissue + "-highlight").style.opacity = 0.6;
+        }
+    });
+});
+$(".tissue-row").each(function() {
+    var tissue = $(this).attr("id").split("-")[0];
+    document.getElementById($(this).attr("id")).addEventListener("mouseleave", function() {
+        $(this).css('background-color', "rgba(109,121,147,0)");
+        $(this).css('border-radius', "0.5rem");
+        // $("#brain-row").css('background-color', "rgba(153,206,211,0.5)");
+        // $("#brain-row").css('background-color', "rgba(109,121,147,0.2)");
+        if (tissue == "pelvic") {
+            document.getElementById("ovary-highlight").style.opacity = 0;
+            document.getElementById("uterus-highlight").style.opacity = 0;
+        } else {
+            document.getElementById(tissue + "-highlight").style.opacity = 0;
+        }
+    });
+});
+
+$(".tissue-row").each(function() {
+    var tissue = $(this).attr("id").split("-")[0];
+    document.getElementById($(this).attr("id")).addEventListener("click", function() {
+        var tr_list = document.getElementById($(this).attr("id")).getElementsByTagName("tbody")[0].children;
+        console.log(tr_list);
+
+        // var tr_list = document.getElementById($(this).attr("id")).children[1].children[0].children[1].children;
+        var cancer_list = [];
+        for (var i = 0; i < tr_list.length; i++) {
+            for (var j = 0; j < tr_list[i].children.length; j++) {
+            var cancer = tr_list[i].children[j].innerHTML.split(" ")[0];
+            console.log(cancer);
+            cancer_list.push(cancer);
+            }
+        }
+        console.log(cancer_list);
+        var url_jump = "../gallery/?"
+        for (var i = 0; i < cancer_list.length; i++) {
+            url_jump = url_jump + "cancer=" + cancer_list[i] + "&"
+        }
+        url_jump = url_jump + "celltype=&species="
+        // console.log(url_jump);
+        window.open(url_jump, "_self");
+    });
+});
+
+window.onload=function() {
+    $("#genesearch").autocomplete({
+        source: availableTags,
+        minLength: 3
+    });
+};
+</script>
+</body>
+</doctype>

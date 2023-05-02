@@ -32,6 +32,7 @@ h3 {
 	font-size:25px;
 	margin-left: 40px;
 	margin-bottom: 0px;
+	margin-top: 20px;
 	/* text-decoration:underline; */
 	color: rgba(8,8,106,1);
 	/* background-color: white; */
@@ -47,6 +48,7 @@ h3 {
 
 .common-page-form select, input {
 	background-color:white;
+	width:200px;
 	/* border-radius: 5px; */
 	border-color: transparent;
 }
@@ -65,7 +67,7 @@ h3 {
 	/* border-color: #00204E; */
 	/* border-radius: 20px; */
 	padding: 20px;
-	margin: 0px 20px;
+	margin: 20px 20px;
 	padding-top: 0px;
 	padding-bottom: 0px;
 	text-align: left;
@@ -75,6 +77,16 @@ h3 {
 
 .common-page-sumbit-btn {
 	margin-top: 20px;
+}
+
+.search-page-submit-btn {
+	border-radius: 10px;
+	text-align: center;
+	height: 40px;
+	background-color: rgba(8,8,106,0.1);
+	color: rgba(8,8,106,1);
+	font-family: "Times New Roman";
+	font-size: 20px;
 }
 
 .common-page-form-container {
