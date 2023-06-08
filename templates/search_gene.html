@@ -102,12 +102,16 @@
     </div>
 </div>
 {% from "_formhelpers.html" import render_field_search %}
-<h3> Input Gene ID </h3>
+<h3> Input Gene Name </h3>
 <form method="post" class="common-page-form">
     <div class="box">
         <div class="search">
-            <input type="text" id="val" placeholder="Enter Gene Name">
-            <button type="submit" class="btn btn-primary common-page-submit-btn">Search</button>
+            <!-- <input type="text" id="val" placeholder="Enter Gene Name"> -->
+            
+            <div class="search-container">
+                {{ render_field_search(form.gene) }}
+                <button type="submit" class="btn btn-primary common-page-submit-btn">Search</button>
+            </div>
         </div>
     </div>
 </form>
@@ -125,8 +129,11 @@
 <form method="post" class="common-page-form">
     <div class="box">
         <div class="search">
-            <input type="text" id="val" placeholder="Enter Fusion Name">
-            <button type="submit" class="btn btn-secondary common-page-submit-btn">Search</button>
+            <!-- <input type="text" id="val" placeholder="Enter Fusion Name"> -->
+            <div class="search-container">
+                {{ render_field_search(form.fusion) }}
+                <button type="submit" class="btn btn-secondary common-page-submit-btn">Search</button>
+            </div>
         </div>
     </div>
 </form>

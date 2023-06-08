@@ -25,6 +25,7 @@ api = Api(app)
 df = pd.read_csv("/home/emmazhao/scTumorAtlas/data/fake.csv")#.set_index("dataset_name")
 dataset_info = pd.read_csv("/home/emmazhao/scTumorAtlas/data/general_table_for_all_datasets_with_reference_new_for_Emma_0527.csv")
 fusion_info = pd.read_csv('/home/emmazhao/scTumorAtlas/data/used_general_fusion_info_0529.csv')
+gene_info = pd.read_csv('/home/emmazhao/scTumorAtlas/data/gencode_v19_gene_info.csv')
 
 @app.route("/", defaults={'path': ''})
 @app.route('/<path:path>')
@@ -211,18 +212,17 @@ def search_gene_page():
     search = model.DatabaseForm(request.form)
     if request.method == 'POST':
         gene_name = search.data['gene']
-        print(gene_name)
         fusion_name = search.data['fusion']
         if len(gene_name)>0:
-            row = dataset_info.loc[dataset_info['gene_name'] == gene_name]
-            row = [row[['gene_link','chromosome','start','end','strand','gene_name','exon_length']]]
+            row = gene_info.loc[gene_info['gene_name'] == gene_name]
+            row = [row[['gene_id','gene_link','chromosome','start','end','strand','gene_name','exon_length']]]
             return render_template('search_gene.html',form=search,
                             table1=[t.to_html(classes='data',index=False,na_rep='',render_links=True, escape=False) for t in row])
         elif len(fusion_name)>0:
             fusion_gene_1 = fusion_name.strip().split("_")[0]
             fusion_gene_2 = fusion_name.strip().split("_")[1]
             row = fusion_info.loc[(fusion_info['fusion_gene_1'] == fusion_gene_1) & (fusion_info['fusion_gene_2'] == fusion_gene_2)]
-            row = [row[['gene_link','chromosome','start','end','strand','gene_name','exon_length']]]
+            row = [row[['#FusionName','SpliceType','LeftGene','RightGene']]]
             return render_template('search_gene.html',form=search,
                             table2=[t.to_html(classes='data',index=False,na_rep='',render_links=True, escape=False) for t in row])
         
