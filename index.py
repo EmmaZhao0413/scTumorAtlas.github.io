@@ -1,14 +1,13 @@
 
 from flask import Flask, send_from_directory,render_template,request,redirect
 from flask_restful import Api
-import os
+import os,csv
 from flask_bootstrap import Bootstrap
 import config
 import model
 import pandas as pd
 import numpy as np
 # import scanpy as sc
-# import controller
 
 app = Flask(__name__, static_folder='frontend')#, instance_relative_config=True)
 app.config['ENV'] = 'development'
@@ -23,8 +22,8 @@ config.init_app(app)
 config.init_cors(app)
 
 api = Api(app)
-df = pd.read_csv("/home/emmazhao/scTumorAtlas/fake.csv")#.set_index("dataset_name")
-df_gene = pd.read_csv("/home/emmazhao/scTumorAtlas/fake_gene.csv")
+df = pd.read_csv("/home/emmazhao/scTumorAtlas/data/fake.csv")#.set_index("dataset_name")
+df_gene = pd.read_csv("/home/emmazhao/scTumorAtlas/data/fake_gene.csv")
 
 @app.route("/", defaults={'path': ''})
 @app.route('/<path:path>')
@@ -49,7 +48,7 @@ def statistics_page():
     # tf.set_index('dataset_name')
     print(tf.index)
     tf_return = tf.loc[index]
-    tables = [tf_return[['checkbox','dataset_name','cancer_type','source','metastasis','alteration_type']]]
+    tables = [tf_return[['checkbox','dataset_name','cancer_type','source','metastasis']]]
     if request.method == 'POST':
         compare = request.form.getlist('first')
         print(request.form.getlist('first'))
@@ -123,67 +122,142 @@ def search_dataset_cancer_type(cancer_type):
 
 @app.route('/dataset/<dataset_name>')
 def dataset(dataset_name):
-    dataset = df.loc["dataset_name"]
-
-    cancer_type = dataset['cancer_type']
-    source = dataset['source']
-    metastasis = dataset['metastasis']
-    alteration_type = dataset['alteration_type']
-    cancer_type = dataset['cancer_type']
-
-    cell_type_stat_img = "frondend/graph/"+dataset_name+".png"
-    gene_table_file = "frondend/gene/"+dataset_name+".csv"
-    gene_table = pd.read_csv(gene_table_file)
+    dataset_info = pd.read_csv('/home/emmazhao/scTumorAtlas/data/general_table_for_all_datasets_with_reference_new_for_Emma_0527.csv')
+    dataset_info = dataset_info.T
+    dataset_info.columns = dataset_info.iloc[0]
+    dataset_info["info_type"] = dataset_info.index
+    # print(dataset_info)
+    summary = dataset_info.loc[["Cancer type","#Cells"]]
+    cancer_type = dataset_info.loc["Cancer type"][dataset_name]
+    num_cell = dataset_info.loc["#Cells"][dataset_name]
+    # print("cancer_type",cancer_type)
+    experiments = dataset_info.loc[["#Conditions/Donors","Conditions/Donors colnames","Conditions/Donors names"]]
+    cell_types = dataset_info.loc[["#Melanocyte","#Hepatocyte","#Epithelial cell","#Fibroblast","#Endothelial cell",
+                                   "#B/Plasma cell","#T/NK cell","#Macro/Mono/DC","#Oligodendrocyte","#Neuron",
+                                   "#Astrocyte","#HSC","#Malignant cell"]]
+    publication = dataset_info.loc[["Reference title","Publish time","doi","GSEid"]]
+    sample = dataset_info.loc[["source","tumor_abbreviation","tumor_name","metastatic_or_primary"]]
+    # print(dataset_info)
     
-    index = list(range(len(gene_table)))
-    tf_return = gene_table.loc[index]
-    table = [tf_return[['dataset_name','cancer_type','source','metastasis','alteration_type','gene']]]
-
+    # f = open(dataset_name+"matrices/"+dataset_name+"_QC_report.csv", "r")
+    # dataset_info = f.read().strip().split("\n")
+    # print(dataset_info[0])
+    # cell_number = dataset_info[0].strip().split(",")[1]
+    # cell_10k_reads = dataset_info[1].strip().split(",")[1]
+    # cell_30MT = dataset_info[2].strip().split(",")[1]
+    # cell_3experssion = dataset_info[3].strip().split(",")[1]
+    # cell_200_gene = dataset_info[4].strip().split(",")[1]
+    # gene_number = dataset_info[6].strip().split(",")[1]
+    # cell_table = pd.read_csv(dataset_name+"matrices/"+dataset_name+"_qc_and_labeled_sample_info.csv")
+    # pos_vals = np.zeros((len(cell_table),))
+    # idxs = [t[1] for t in sorted(list(zip(list(pos_vals),list(cell_table.index))),key=lambda x:x[0],reverse=True)]
+    # tf = cell_table.loc[idxs]
+    # tf = [tf[['title','geo_accession','status','submission_date','last_update_date']]]
+    summary = [summary[[dataset_name]]]
+    experiments = [experiments[["info_type",dataset_name]]]
+    cell_types = [cell_types[["info_type",dataset_name]]]
+    publication = [publication[["info_type",dataset_name]]]
+    sample = [sample[["info_type",dataset_name]]]
+    plot ="../frontend/graph/plot2.png"
     return render_template('dataset.html',
+                           plot=plot,
                             dataset_name=dataset_name,
                             cancer_type=cancer_type,
-                            source=source,
-                            metastasis=metastasis,
-                            alteration_type=alteration_type,
-                            cell_type_stat_img=cell_type_stat_img,
-                            table=[t.to_html(classes='data',index=False,na_rep='',render_links=True, escape=False) for t in table])
+                            num_cell=num_cell,
+                            table1=[t.to_html(classes='data',index=False,na_rep='',render_links=True, escape=False) for t in experiments],
+                            table2=[t.to_html(classes='data',index=False,na_rep='',render_links=True, escape=False) for t in cell_types],
+                            table3=[t.to_html(classes='data',index=False,na_rep='',render_links=True, escape=False) for t in publication],
+                            table4=[t.to_html(classes='data',index=False,na_rep='',render_links=True, escape=False) for t in sample])
 
 
-@app.route('/gene',methods=['GET','POST'])
+@app.route('/fusion/<fusion_name>')
+def fusion(fusion_name):
+    dataset_info = pd.read_csv('/home/emmazhao/scTumorAtlas/data/used_general_fusion_info_0529.csv')
+    fusion_gene_1 = fusion_name.strip().split("_")[0]
+    fusion_gene_2 = fusion_name.strip().split("_")[1]
+    row = dataset_info.loc[(dataset_info['fusion_gene_1'] == fusion_gene_1) & (dataset_info['fusion_gene_2'] == fusion_gene_2)]
+    print(row["#FusionName"].values.item())
+    # FusionName = row["#FusionName"].values.item()
+    Position_from = row["#FusionName_and_pos"].values.item().strip().split(";")[1]
+    Position_to = row["#FusionName_and_pos"].values.item().strip().split(";")[2]
+    SpliceType = row["SpliceType"].values.item()
+    LeftBreakDinuc = row["LeftBreakDinuc"].values.item()
+    RightBreakDinuc = row["RightBreakDinuc"].values.item()
+    plot ="../frontend/graph/plot1.png"
+
+    LeftGene = row["LeftGene"].values.item().strip().split("^")[1]
+    RightGene = row["RightGene"].values.item().strip().split("^")[1]
+    gene_info = pd.read_csv('/home/emmazhao/scTumorAtlas/data/gencode_v19_gene_info.csv')
+    row = gene_info.loc[((gene_info['gene_id'] == LeftGene) | (gene_info['gene_id'] == RightGene))]
+    row = [row[['gene_link','chromosome','start','end','strand','gene_name','exon_length']]]
+    return render_template('fusion.html',
+                            fusion_name=fusion_name,
+                            Position_from=Position_from,
+                            Position_to=Position_to,
+                            SpliceType=SpliceType,
+                            LeftBreakDinuc=LeftBreakDinuc,
+                            RightBreakDinuc=RightBreakDinuc,
+                            plot=plot,
+                            table1=[t.to_html(classes='data',index=False,na_rep='',render_links=True, escape=False) for t in row])
+
+
+@app.route('/gene/<gene_id>')
+def gene(gene_id):
+    dataset_info = pd.read_csv('/home/emmazhao/scTumorAtlas/data/gencode_v19_gene_info.csv')
+    row = dataset_info.loc[dataset_info['gene_id'] == gene_id]
+    gene_name = row["gene_name"].values.item()
+    chromosome = row["chromosome"].values.item()
+    start = row["start"].values.item()
+    end = row["end"].values.item()
+    strand = row["strand"].values.item()
+    exon_length = row["exon_length"].values.item()
+    print(gene_name)
+
+    fusion_info = pd.read_csv('/home/emmazhao/scTumorAtlas/data/used_general_fusion_info_0529.csv')
+    row = fusion_info.loc[((fusion_info['fusion_gene_1'] == gene_name) | (fusion_info['fusion_gene_2'] == gene_name))]
+    print(row)
+    row = [row[['#FusionName','SpliceType','LeftGene','RightGene']]]
+    # row = list(row["#FusionName"].values)
+    plot1 ="../frontend/graph/plot3.png"
+    return render_template('gene.html',
+                           gene_name=gene_name,
+                            gene_id=gene_id,
+                            chromosome=chromosome,
+                            start=start,
+                            end=end,
+                            strand=strand,
+                            exon_length=exon_length,
+                            plot1=plot1,
+                            table1=[t.to_html(classes='data',index=False,na_rep='',render_links=True, escape=False) for t in row])
+
+@app.route('/search_gene',methods=['GET','POST'])
 def search_gene_page():
-    gene_list = df_gene['gene']
     # input dataset should be a dataset with download address
     search = model.DatabaseForm(request.form)
-    pos_vals = np.zeros((len(df_gene),))
-    idxs = [t[1] for t in sorted(list(zip(list(pos_vals),list(df_gene.index))),key=lambda x:x[0],reverse=True)]
-    tf = df_gene.loc[idxs]
-    index = list(range(len(tf)))
-    tf_return = tf.loc[index]
-    tables = [tf_return[['checkbox','dataset_name','cancer_type','source','metastasis']]]
+    # pos_vals = np.zeros((len(df_gene),))
+    # idxs = [t[1] for t in sorted(list(zip(list(pos_vals),list(df_gene.index))),key=lambda x:x[0],reverse=True)]
+    # tf = df_gene.loc[idxs]
+    # index = list(range(len(tf)))
+    # tf_return = tf.loc[index]
+    # tables = [tf_return[['checkbox','dataset_name','cancer_type','source','metastasis']]]
     if request.method == 'POST':
-        gene = search.data['gene']
-        cancer_type = search.data['cancer_type']
-        source = search.data['source']
-        metastasis = search.data['metastasis']
-        tf = tf[tf['cancer_type'] == cancer_type]
-        tf = tf[tf['source'] == source]
-        tf = tf[tf['metastasis'] == metastasis]
-        if gene not in gene_list:
-            while True:
-                gene = gene[:-1]
-                if len(gene) == 0:
-                    break
-                t = [s for s in gene_list if gene in s]
-                if len(t) > 0:
-                    tf_return = tf_return[tf_return['gene'].isin(t)]
-                    # gene = t.index[0]
-                    break
-        tables = [tf_return[['checkbox','dataset_name','cancer_type','source','metastasis']]]
-        return render_template('gene.html',table1=[t.to_html(classes='data',index=False,na_rep='',render_links=True, escape=False) for t in tables],
-            num=len(tables), form=search)
-    return render_template('gene.html',table1=[t.to_html(classes='data',index=False,na_rep='',render_links=True, escape=False) for t in tables],
-            num=79, form=search)
+        gene_name = search.data['gene']
+        fusion_name = search.data['fusion']
+        if len(gene_name)>0:
+            return gene(gene_name)
+        elif len(fusion_name)>0:
+            return fusion(fusion_name)
+        else:
+            return render_template('search_gene.html',form=search)
+    return render_template('search_gene.html',form=search)
 
+
+@app.route('/help')
+def help():
+    return render_template('help.html')
 
 if __name__ == '__main__':
-    app.run(threaded=True, port=5000)
+    # fusion("7SK_GARS")
+    # gene("7SK")
+    dataset("GSE118389")
+    # app.run(threaded=True, port=5000)

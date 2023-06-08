@@ -60,14 +60,14 @@
 <head>
     <body>
     <div class="navbar" role="navigation">
-        <img src="logo.jpg"  class="img-fluid"/>
+        <img src="frontend/logo.jpg"  class="img-fluid"/>
         <a class="navbar-brand-top" href="/" style="text-decoration:none;">
             <i class="fa fa-home" style="margin-right: 5px;"></i>
             Home </a>
         <a class="navbar-brand-top" href="/search_dataset">
             <i class="fa fa-database" style="margin-right: 5px;"></i>
             Dataset</a>
-        <a class="navbar-brand-top" href="/gene">
+        <a class="navbar-brand-top" href="/search_gene">
             <i class="fa fa-search" style="margin-right: 5px;"></i>
             Gene</a>
         <a class="navbar-brand-top" href="/statistics">
@@ -211,8 +211,10 @@
     </div>
     <div class="column right">
         <h4> Single Cell Genomics Distribution </h4>
-        <img src="graphB.png"  class="graphB" style="display: block; width:650px; height:500px; top:0; bottom:0;"/>
-        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1859 1666" style="enable-background:new 100 100 26944 23604; position: absolute; z-index: 999; width:1286px; height:1529px; top: 0; bottom: 0" xml:space="preserve">
+        <img src="frontend/graphB.png"  class="graphB" style="display: block; width:650px; height:500px; top:0; bottom:0;"/>
+        <!-- <div id="piechart"></div> -->
+        <!-- <div id="chartContainer" style="height: 300px; width: 100%;"></div> -->
+        <!-- <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1859 1666" style="enable-background:new 100 100 26944 23604; position: absolute; z-index: 999; width:1286px; height:1529px; top: 0; bottom: 0" xml:space="preserve">
             <style type="text/css">
             .st0 {
                 opacity: 1;
@@ -231,7 +233,7 @@
             </style>
             <polygon id="GBM-highlight" class="st0 highlight" points="445,45 445,115 485,120 525,130 565,145 595,160 615,185 630,300 655,325 740,405 775,390 820,375 
             710,280 700,275 750,245 725,210 710,220 695,210 675,155 615,100 595,85 555,65 535,60 515,53" />
-        </svg>
+        </svg> -->
     </div>
 <!-- <form method="post" class="common-page-form">
     <div class="row">
@@ -243,9 +245,6 @@
             </div>
             <div class="column">
                 {{ render_field(form.metastasis) }}
-            </div>
-            <div class="column">
-                {{ render_field(form.alteration_type) }}
             </div>
             <button type="submit" class="btn btn-tisch common-page-submit-btn">Search</button>
     </div>
@@ -265,10 +264,12 @@
 <form method="post" class="common-page-form">
     <div class="row">
         <div class="column_compare_graph" style="height: 400px; overflow: auto;">
-            <img src="{{ first_graph }}" class="compare_graph"/>
+            <!-- <img src="{{ first_graph }}" class="compare_graph"/> -->
+            <div id="chartContainer" style="height: 300px; width: 50%;"></div>
         </div>
         <div class="column_compare_graph" style="height: 400px; overflow: auto;">
-            <img src="{{ second_graph }}" class="compare_graph"/>
+            <div id="chartContainer2" style="height: 300px; width: 50%;"></div>
+            <!-- <img src="{{ second_graph }}" class="compare_graph"/> -->
         </div>
     </div>
 </form>
@@ -276,6 +277,8 @@
 {% for table in table2 %}
     {{ table|safe }}
 {% endfor %}
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 <script src="/static/js/jquery-3.4.1.min.js"></script>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -379,6 +382,242 @@ window.onload=function() {
         minLength: 3
     });
 };
+
+// Load google charts
+google.charts.load('current', {'packages':['corechart']});
+google.charts.setOnLoadCallback(drawChart);
+
+// Draw the chart and set the chart values
+function drawChart() {
+  var data = google.visualization.arrayToDataTable([
+  ['Task', 'Hours per Day'],
+  ['Work', 8],
+  ['Eat', 2],
+  ['TV', 4],
+  ['Gym', 2],
+  ['Sleep', 8]
+]);
+
+  // Optional; add a title and set the width and height of the chart
+  var options = {'title':'My Average Day', 'width':550, 'height':400};
+
+  // Display the chart inside the <div> element with id="piechart"
+  var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+  
+  chart.draw(data, options);
+}
+
+window.onload = function () {
+    var chart = new CanvasJS.Chart("chartContainer",
+    {
+     title:{
+      text: "umap_GSE83142_final_cell_label",
+       horizontalAlign: "center"
+    },
+    axisX:{
+
+      title: "UMAP1",
+      valueFormatString:  "#,##0.##",
+      minimum: 5000,
+      maximum: 100000
+    },
+    axisY:{
+      title: "UMAP2",
+      valueFormatString:  "#,##0.##"
+    },
+    legend: {
+      verticalAlign: "bottom",
+      horizontalAlign: "left"
+
+    },
+    data: [
+    {
+     type: "scatter",
+     color: "#778899",
+     legendText: "Each triangle represents one malignant cell",
+     showInLegend: "true",
+     markerType: "triangle",
+     dataPoints: [
+
+     { x: 60000, y: 10200 },
+     { x: 60450, y: 10100 },
+     { x: 60400, y: 10400 },
+     { x: 60900, y: 9400 },
+     { x: 61000, y: 9400 },
+     { x: 64000, y: 9000 },
+     { x: 64100, y: 10600 },
+     { x: 64400, y: 10400 },
+     { x: 66000, y: 12400 },
+     { x: 66400, y: 13400 },
+
+     { x: 70400, y: 10400 },
+     { x: 73200, y: 10600 },
+     { x: 76300, y: 11000 },
+     { x: 78100, y: 12000 },
+     { x: 78500, y: 13000 },
+
+     { x: 80900, y: 10400 },
+     { x: 90500, y: 13400 }
+     ]
+   },
+   {
+     type: "scatter",
+     color: "#778899",
+     legendText: "Each circle represents one malignant cell",
+     showInLegend: "true",
+     markerType: "circle",
+     dataPoints: [
+
+     { x: 10000, y: 1100 },
+     { x: 11000, y: 1200 },
+     { x: 13000, y: 1250 },
+     { x: 15000, y: 1280 },
+     { x: 18000, y: 1600 },
+
+     { x: 20000, y: 2200 },
+     { x: 20700, y: 2200 },
+     { x: 21000, y: 2200 },
+     { x: 24500, y: 2200 },
+     { x: 26500, y: 2530 },
+     { x: 28500, y: 3040 },
+
+     { x: 30000, y: 4030 },
+     { x: 30400, y: 3040 },
+     { x: 30600, y: 4060 },
+     { x: 31000, y: 4040 },
+     { x: 31500, y: 5100 },
+     { x: 31900, y: 4200 },
+     { x: 34400, y: 3030 },
+     { x: 37400, y: 3020 },
+
+     { x: 40000, y: 8210 },
+     { x: 40500, y: 8040 },
+     { x: 40500, y: 9060 },
+     { x: 42300, y: 8300 },
+     { x: 44100, y: 9300 },
+     { x: 45200, y: 6300 },
+     { x: 45400, y: 9900 },
+     { x: 46600, y: 4200 },
+     { x: 48500, y: 8200 },
+
+     { x: 50000, y: 9040 },
+     { x: 50300, y: 9200 },
+     { x: 50700, y: 7020 },
+     { x: 53000, y: 9040 },
+     { x: 53300, y: 9030 },
+     { x: 56700, y: 10120 },
+     { x: 58700, y: 4020 }
+     ]
+   }
+   ]
+ });
+ window.onload = function () {
+    var chart = new CanvasJS.Chart("chartContainer2",
+    {
+     title:{
+      text: "umap_GSE83142_final_cell_label",
+       horizontalAlign: "center"
+    },
+    axisX:{
+
+      title: "UMAP1",
+      valueFormatString:  "#,##0.##",
+      minimum: 5000,
+      maximum: 100000
+    },
+    axisY:{
+      title: "UMAP2",
+      valueFormatString:  "#,##0.##"
+    },
+    legend: {
+      verticalAlign: "bottom",
+      horizontalAlign: "left"
+
+    },
+    data: [
+    {
+     type: "scatter",
+     color: "#778899",
+     legendText: "Each triangle represents one malignant cell",
+     showInLegend: "true",
+     markerType: "triangle",
+     dataPoints: [
+
+     { x: 60000, y: 10200 },
+     { x: 60450, y: 10100 },
+     { x: 60400, y: 10400 },
+     { x: 60900, y: 9400 },
+     { x: 61000, y: 9400 },
+     { x: 64000, y: 9000 },
+     { x: 64100, y: 10600 },
+     { x: 64400, y: 10400 },
+     { x: 66000, y: 12400 },
+     { x: 66400, y: 13400 },
+
+     { x: 70400, y: 10400 },
+     { x: 73200, y: 10600 },
+     { x: 76300, y: 11000 },
+     { x: 78100, y: 12000 },
+     { x: 78500, y: 13000 },
+
+     { x: 80900, y: 10400 },
+     { x: 90500, y: 13400 }
+     ]
+   },
+   {
+     type: "scatter",
+     color: "#778899",
+     legendText: "Each circle represents one malignant cell",
+     showInLegend: "true",
+     markerType: "circle",
+     dataPoints: [
+
+     { x: 10000, y: 1100 },
+     { x: 11000, y: 1200 },
+     { x: 13000, y: 1250 },
+     { x: 15000, y: 1280 },
+     { x: 18000, y: 1600 },
+
+     { x: 20000, y: 2200 },
+     { x: 20700, y: 2200 },
+     { x: 21000, y: 2200 },
+     { x: 24500, y: 2200 },
+     { x: 26500, y: 2530 },
+     { x: 28500, y: 3040 },
+
+     { x: 30000, y: 4030 },
+     { x: 30400, y: 3040 },
+     { x: 30600, y: 4060 },
+     { x: 31000, y: 4040 },
+     { x: 31500, y: 5100 },
+     { x: 31900, y: 4200 },
+     { x: 34400, y: 3030 },
+     { x: 37400, y: 3020 },
+
+     { x: 40000, y: 8210 },
+     { x: 40500, y: 8040 },
+     { x: 40500, y: 9060 },
+     { x: 42300, y: 8300 },
+     { x: 44100, y: 9300 },
+     { x: 45200, y: 6300 },
+     { x: 45400, y: 9900 },
+     { x: 46600, y: 4200 },
+     { x: 48500, y: 8200 },
+
+     { x: 50000, y: 9040 },
+     { x: 50300, y: 9200 },
+     { x: 50700, y: 7020 },
+     { x: 53000, y: 9040 },
+     { x: 53300, y: 9030 },
+     { x: 56700, y: 10120 },
+     { x: 58700, y: 4020 }
+     ]
+   }
+   ]
+ });
+
+chart.render();
+}
 </script>
 </body>
 </doctype>

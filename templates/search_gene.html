@@ -1,0 +1,174 @@
+<!doctype html>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link href='https://fonts.googleapis.com/css?family=Fredoka One' rel='stylesheet'>
+<link rel="stylesheet" type="text/css" href="style/common.css">
+<link rel="stylesheet" type="text/css" href="style/search.css">
+<style>
+    body {
+      margin: 0;
+    }
+    h3 {
+        /* background-color: rgba(8,8,106,0.3); */
+        text-align: left;
+        margin-bottom: 0px;
+    }
+    * {
+        box-sizing: border-box;
+    }
+
+    /* Create four equal columns that floats next to each other */
+    .column {
+        float: left;
+        width: 25%;
+        padding: 0px;
+        height: 75px; /* Should be removed. Only for demonstration */
+    }
+
+    .column_compare_graph {
+        float: left;
+        width: 50%;
+        padding: 0px;
+        height: 200px;
+    }
+
+    /* Clear floats after the columns */
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+    .box{
+        margin: 20px auto;
+    }
+    .search{
+        width: auto;
+        height: 45px;
+        margin-bottom: 0px;
+    }
+    .show{
+        display: none;
+        margin-top: 0px;
+        height: 300px;
+        width: 250px;
+        border: #eee solid 1px;
+        overflow: scroll;
+    }
+    .shadow {
+        box-shadow: 0 .125rem .25rem rgba(0,0,0,.075);
+        padding-right: 0;
+        padding-left: 0;
+        border-radius: 0;
+        padding: 4rem 2rem;
+        margin-bottom: 2rem;
+        background-color: #e9ecef;
+    }
+    .container {
+        width: 100%;
+        padding-right: 15px;
+        padding-left: 15px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+</style>
+<head>
+    <body>
+    <div class="navbar" role="navigation">
+        <img src="frontend/logo.jpg"  class="img-fluid"/>
+        <a class="navbar-brand-top" href="/" style="text-decoration:none;">
+            <i class="fa fa-home" style="margin-right: 5px;"></i>
+            Home </a>
+        <a class="navbar-brand-top" href="/search_dataset">
+            <i class="fa fa-database" style="margin-right: 5px;"></i>
+            Dataset</a>
+        <a class="navbar-brand-top" href="/gene">
+            <i class="fa fa-search" style="margin-right: 5px;"></i>
+            Gene</a>
+        <a class="navbar-brand-top" href="/statistics">
+            <i class="fa fa-bar-chart" style="margin-right: 5px;"></i>
+            Statistics</a>
+        <a class="navbar-brand-top" href="/help"> 
+            <i class="fa fa-info-circle" style="margin-right: 5px;"></i>
+            Help</a>   
+    </div>
+</head>
+
+
+
+<div class="shadow">
+    <div class="container">
+        <h1 style="font-family: Avenir-black,Arial,sans-serif">Gene Exploration</h1>
+        <p style="font-size: 1.2rem; font-family: 'Trebuchet MS',Arial,sans-serif">
+            Search a gene or fusion according to gene ID or fusion name</p>
+    </div>
+</div>
+{% from "_formhelpers.html" import render_field_search %}
+<h3> Input Gene ID </h3>
+<form method="post" class="common-page-form">
+    <div class="box">
+        <div class="search">
+            <input type="text" id="val" placeholder="Enter Gene Name">
+            <!-- <div class="search-container" id="val"  placeholder="Enter Gene Name">
+                {{ render_field_search(form.gene) }}
+                <button type="submit" class="btn btn-primary common-page-submit-btn">Search</button>
+            </div> -->
+            <button type="submit" class="btn btn-primary common-page-submit-btn">Search</button>
+        </div>
+    </div>
+</form>
+
+<h3>Input Fusion Name</h3>
+<form method="post" class="common-page-form">
+    <div class="box">
+        <div class="search">
+            <input type="text" id="val" placeholder="Enter Fusion Name">
+            <button type="submit" class="btn btn-secondary common-page-submit-btn">Search</button>
+        </div>
+    </div>
+</form>
+</body>
+<script>
+    var array = ["7SK","GARS"];
+    var val = document.getElementById('val');
+    var sub = document.getAnimations('sub');
+    var show = document.getElementById('show');
+
+    
+    val.onkeyup = function(){
+        show.style.display = 'block';
+
+        var str = '';
+        for(let i = 0; i < array.length; i++)
+        {
+            if(array[i].indexOf(val.value) != -1)
+                str += "<p>"+array[i]+"</p>";
+
+        }
+        if(!val.value || !str)
+            show.innerHTML = "<p>It's not included in the dataset</p>";
+        else
+            show.innerHTML = str;
+
+        var arrayList = show.getElementsByTagName("p");
+        for(let i = 0; i < arrayList.length; i++)
+        {
+            arrayList[i].addEventListener('click',function(){
+                alert(arrayList[i].innerText)
+            });
+        }   
+    }
+
+
+    val.onblur = function(){
+        var t = 5;
+        setInterval(()=>{
+            t--;
+            if(t==0)
+            {
+                show.style.display = 'none';
+                val.value = "";
+            }
+        },(1000))
+    }
+    
+</script>
+</doctype>

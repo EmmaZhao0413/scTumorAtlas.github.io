@@ -43,6 +43,7 @@ class DatabaseForm(Form):
     ]
 
     gene = StringField('Gene:')
+    fusion = StringField('Fusion:')
     cancer_type = SelectField('Cancer Type:', choices=cancer_type)
     source = SelectField('Cancer Source:', choices=source)
     metastasis = SelectField('Metastasis:', choices=metastasis)

@@ -1,5 +1,0 @@
-checkbox,dataset_name,cancer_type,source,metastasis,alteration_type,gene
-<input type="checkbox" name="GSE83142" value='1'>,<a href=/dataset/GSE83142>GSE83142</a>,BRCA,cell line,metastasis,SNV,ENST001
-<input type="checkbox" name="first" value='2'>,second,ALL,tissue,primary,CNV,ENST002
-<input type="checkbox" name="first" value='2'>,third,LUAD,PDX,primary,Splicing,ENST003
-<input type="checkbox" name="first" value='2'>,fourth,LUAD,PDX,primary,Splicing,ENSG002
