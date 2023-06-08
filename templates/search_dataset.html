@@ -74,11 +74,11 @@
     }
     .left {
         /* background-color: rgba(8,8,106,0.1); */
-      width: 25%;
+      width: 35%;
     }
     
     .right {
-      width: 60%;
+      width: 45%;
     }
 </style>
 <head>
@@ -112,159 +112,35 @@
     </div>
 </div>
 
+{% from "_formhelpers.html" import render_field_search %}
 <h3> Search for database </h3>
 <div class="row">
     <div class="column left">
-    <h4>Cancer Type</h4>
-        <div class="cancer-types" style="height: 300px; overflow: auto;">
-            <li class="accordion-item" data-accordion-item>
-                <a class="cancer-type-item tissue-row" role="tab" id="GBM-row">
-                    GBM
-                </a>
-            </li>
-            <li class="accordion-item" data-accordion-item>
-                <a class="cancer-type-item" role="tab">
-                    BRCA
-                </a>
-            </li>
-            <li class="accordion-item" data-accordion-item>
-                <a class="cancer-type-item" role="tab">
-                    LCML
-                </a>
-            </li>
-            <li class="accordion-item" data-accordion-item>
-                <a class="cancer-type-item" role="tab">
-                    OSCC
-                </a>
-            </li>
-            <li class="accordion-item" data-accordion-item>
-                <a class="cancer-type-item" role="tab">
-                    SKCM
-                </a>
-            </li>
-            <li class="accordion-item" data-accordion-item>
-                <a class="cancer-type-item" role="tab">
-                    CRC
-                </a>
-            </li>
-            <li class="accordion-item" data-accordion-item>
-                <a class="cancer-type-item" role="tab">
-                    MM
-                </a>
-            </li>
-            <li class="accordion-item" data-accordion-item>
-                <a class="cancer-type-item" role="tab">
-                    ALL
-                </a>
-            </li>
-            <li class="accordion-item" data-accordion-item>
-                <a class="cancer-type-item" role="tab">
-                    LGG
-                </a>
-            </li>
-            <li class="accordion-item" data-accordion-item>
-                <a class="cancer-type-item" role="tab">
-                    LUAD
-                </a>
-            </li>
-            <li class="accordion-item" data-accordion-item>
-                <a class="cancer-type-item" role="tab">
-                    ESCA
-                </a>
-            </li>
-            <li class="accordion-item" data-accordion-item>
-                <a class="cancer-type-item" role="tab">
-                    PRAD
-                </a>
-            </li>
-            <li class="accordion-item" data-accordion-item>
-                <a class="cancer-type-item" role="tab">
-                    LIHC
-                </a>
-            </li>
-            <li class="accordion-item" data-accordion-item>
-                <a class="cancer-type-item" role="tab">
-                    PAAD
-                </a>
-            </li>
-            <li class="accordion-item" data-accordion-item>
-                <a class="cancer-type-item" role="tab">
-                    HCC
-                </a>
-            </li>
-            <li class="accordion-item" data-accordion-item>
-                <a class="cancer-type-item" role="tab">
-                    KIRC
-                </a>
-            </li>
-            <li class="accordion-item" data-accordion-item>
-                <a class="cancer-type-item" role="tab">
-                    LUSC
-                </a>
-            </li>
-        </div>
-        <h4>Source</h4>
-        <div class="source" style="height: 100px; overflow: auto;">
-            <li class="accordion-item" data-accordion-item>
-                <a class="cancer-type-item" role="tab">
-                    cell line
-                </a>
-            </li>
-            <li class="accordion-item" data-accordion-item>
-                <a class="cancer-type-item" role="tab">
-                    CTC
-                </a>
-            </li>
-            <li class="accordion-item" data-accordion-item>
-                <a class="cancer-type-item" role="tab">
-                    PDX
-                </a>
-            </li>
-            <li class="accordion-item" data-accordion-item>
-                <a class="cancer-type-item" role="tab">
-                    tissue
-                </a>
-            </li>
-        </div>
-        <h4>Metastasis</h4>
-        <div class="metastasis" style="height: 100px; overflow: auto;">
-            <li class="accordion-item" data-accordion-item>
-                <a class="cancer-type-item" role="tab">
-                    metastasis
-                </a>
-            </li>
-            <li class="accordion-item" data-accordion-item>
-                <a class="cancer-type-item" role="tab">
-                    primary
-                </a>
-            </li>
-        </div>
+        <form method="post" class="common-page-form">
+            <div class="search-container">
+                {{ render_field_search(form.gene) }}
+            </div>
+            <div class="search-container">
+                {{ render_field_search(form.cancer_type) }}
+            </div>
+            <div class="search-container">
+                {{ render_field_search(form.source) }}
+            </div>
+            <div class="search-container">
+                {{ render_field_search(form.metastasis) }}
+            </div>
+            <div class="search-container">
+                <input type="submit" class="search-page-submit-btn" value="Search">
+            </div>
+        </form>
     </div>
     <div class="column right">
-        <h4> Single Cell Genomics Distribution </h4>
+        <!-- <h4> Single Cell Genomics Distribution </h4> -->
         <img src="frontend/graphB.png"  class="graphB" style="display: block; width:650px; height:500px; top:0; bottom:0;"/>
     </div>
 </div>
-{% from "_formhelpers.html" import render_field_search %}
-<h3> Download Database </h3>
-<form method="post" class="common-page-form">
-    <div class="search-container">
-        {{ render_field_search(form.gene) }}
-    </div>
-    <div class="search-container">
-        {{ render_field_search(form.cancer_type) }}
-    </div>
-    <div class="search-container">
-        {{ render_field_search(form.source) }}
-    </div>
-    <div class="search-container">
-        {{ render_field_search(form.metastasis) }}
-    </div>
-    <div class="search-container">
-        <input type="submit" class="search-page-submit-btn" value="Search">
-    </div>
-</form>
-<h3 id="result-title"> Return {{ num }} across 79 datasets </h3>
+
+<h3 id="result-title"> Return {{ num }} across {{total_num}} datasets </h3>
 <form method="post" id="results-page-table-container">
     {% for table in table1 %}
         {{table|safe}}

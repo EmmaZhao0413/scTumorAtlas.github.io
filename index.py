@@ -23,7 +23,8 @@ config.init_cors(app)
 
 api = Api(app)
 df = pd.read_csv("/home/emmazhao/scTumorAtlas/data/fake.csv")#.set_index("dataset_name")
-df_gene = pd.read_csv("/home/emmazhao/scTumorAtlas/data/fake_gene.csv")
+dataset_info = pd.read_csv("/home/emmazhao/scTumorAtlas/data/general_table_for_all_datasets_with_reference_new_for_Emma_0527.csv")
+fusion_info = pd.read_csv('/home/emmazhao/scTumorAtlas/data/used_general_fusion_info_0529.csv')
 
 @app.route("/", defaults={'path': ''})
 @app.route('/<path:path>')
@@ -53,16 +54,7 @@ def statistics_page():
         compare = request.form.getlist('first')
         print(request.form.getlist('first'))
         if len(compare)==0: #get search result
-            # search = model.DatabaseForm(request.form)
             cancer_type = search.data['cancer_type']
-            # source = search.data['source']
-            # metastasis = search.data['metastasis']
-            # alteration_type = search.data['alteration_type']
-            # tf = tf[tf['cancer_type'] == cancer_type]
-            # tf = tf[tf['source'] == source]
-            # tf = tf[tf['metastasis'] == metastasis]
-            # tf = tf[tf['alteration_type'] == alteration_type]
-            # tables = [tf_return[['checkbox','dataset_name','cancer_type','source','metastasis','alteration_type']]]
         else:
             first_graph = "frontend/graph/"+compare[0]+".png"
             second_graph = "frontend/graph/"+compare[1]+".png"
@@ -75,13 +67,14 @@ def statistics_page():
 @app.route('/search_dataset',methods=['GET','POST'])
 def search_dataset_page():
     search = model.DatabaseForm(request.form)
-    pos_vals = np.zeros((len(df_gene),))
-    idxs = [t[1] for t in sorted(list(zip(list(pos_vals),list(df_gene.index))),key=lambda x:x[0],reverse=True)]
-    tf = df_gene.loc[idxs]
+    pos_vals = np.zeros((len(dataset_info),))
+    idxs = [t[1] for t in sorted(list(zip(list(pos_vals),list(dataset_info.index))),key=lambda x:x[0],reverse=True)]
+    tf = dataset_info.loc[idxs]
     index = list(range(len(tf)))
     tf_return = tf.loc[index]
     line_num = len(tf_return)
     tables = [tf_return[['dataset_name','cancer_type','source','metastasis','alteration_type','gene']]]
+    total_num = len(dataset_info.index)
     if request.method == 'POST':
         gene = search.data['gene']
         cancer_type = search.data['cancer_type']
@@ -98,16 +91,16 @@ def search_dataset_page():
         tables = [tf[['dataset_name','cancer_type','source','metastasis','gene']]]
         print(line_num)
         return render_template('search_dataset.html',table1=[t.to_html(classes='data',index=False,na_rep='',render_links=True, escape=False) for t in tables],
-            num=len(tables[0]), form=search)
+            num=len(tables[0]), form=search, total_num=total_num)
     return render_template('search_dataset.html',table1=[t.to_html(classes='data',index=False,na_rep='',render_links=True, escape=False) for t in tables],
             num=line_num, form=search)
 
-@app.route('/<cancer_type>')
+@app.route('/search_dataset/<cancer_type>')
 def search_dataset_cancer_type(cancer_type):
     search = model.DatabaseForm(request.form)
-    pos_vals = np.zeros((len(df_gene),))
-    idxs = [t[1] for t in sorted(list(zip(list(pos_vals),list(df_gene.index))),key=lambda x:x[0],reverse=True)]
-    tf = df_gene.loc[idxs]
+    pos_vals = np.zeros((len(dataset_info),))
+    idxs = [t[1] for t in sorted(list(zip(list(pos_vals),list(dataset_info.index))),key=lambda x:x[0],reverse=True)]
+    tf = dataset_info.loc[idxs]
     index = list(range(len(tf)))
     tf_return = tf.loc[index]
     line_num = len(tf_return)
@@ -122,37 +115,19 @@ def search_dataset_cancer_type(cancer_type):
 
 @app.route('/dataset/<dataset_name>')
 def dataset(dataset_name):
-    dataset_info = pd.read_csv('/home/emmazhao/scTumorAtlas/data/general_table_for_all_datasets_with_reference_new_for_Emma_0527.csv')
+    # dataset_info = pd.read_csv('/home/emmazhao/scTumorAtlas/data/general_table_for_all_datasets_with_reference_new_for_Emma_0527.csv')
     dataset_info = dataset_info.T
     dataset_info.columns = dataset_info.iloc[0]
     dataset_info["info_type"] = dataset_info.index
-    # print(dataset_info)
     summary = dataset_info.loc[["Cancer type","#Cells"]]
     cancer_type = dataset_info.loc["Cancer type"][dataset_name]
     num_cell = dataset_info.loc["#Cells"][dataset_name]
-    # print("cancer_type",cancer_type)
     experiments = dataset_info.loc[["#Conditions/Donors","Conditions/Donors colnames","Conditions/Donors names"]]
     cell_types = dataset_info.loc[["#Melanocyte","#Hepatocyte","#Epithelial cell","#Fibroblast","#Endothelial cell",
                                    "#B/Plasma cell","#T/NK cell","#Macro/Mono/DC","#Oligodendrocyte","#Neuron",
                                    "#Astrocyte","#HSC","#Malignant cell"]]
     publication = dataset_info.loc[["Reference title","Publish time","doi","GSEid"]]
     sample = dataset_info.loc[["source","tumor_abbreviation","tumor_name","metastatic_or_primary"]]
-    # print(dataset_info)
-    
-    # f = open(dataset_name+"matrices/"+dataset_name+"_QC_report.csv", "r")
-    # dataset_info = f.read().strip().split("\n")
-    # print(dataset_info[0])
-    # cell_number = dataset_info[0].strip().split(",")[1]
-    # cell_10k_reads = dataset_info[1].strip().split(",")[1]
-    # cell_30MT = dataset_info[2].strip().split(",")[1]
-    # cell_3experssion = dataset_info[3].strip().split(",")[1]
-    # cell_200_gene = dataset_info[4].strip().split(",")[1]
-    # gene_number = dataset_info[6].strip().split(",")[1]
-    # cell_table = pd.read_csv(dataset_name+"matrices/"+dataset_name+"_qc_and_labeled_sample_info.csv")
-    # pos_vals = np.zeros((len(cell_table),))
-    # idxs = [t[1] for t in sorted(list(zip(list(pos_vals),list(cell_table.index))),key=lambda x:x[0],reverse=True)]
-    # tf = cell_table.loc[idxs]
-    # tf = [tf[['title','geo_accession','status','submission_date','last_update_date']]]
     summary = [summary[[dataset_name]]]
     experiments = [experiments[["info_type",dataset_name]]]
     cell_types = [cell_types[["info_type",dataset_name]]]
@@ -234,19 +209,23 @@ def gene(gene_id):
 def search_gene_page():
     # input dataset should be a dataset with download address
     search = model.DatabaseForm(request.form)
-    # pos_vals = np.zeros((len(df_gene),))
-    # idxs = [t[1] for t in sorted(list(zip(list(pos_vals),list(df_gene.index))),key=lambda x:x[0],reverse=True)]
-    # tf = df_gene.loc[idxs]
-    # index = list(range(len(tf)))
-    # tf_return = tf.loc[index]
-    # tables = [tf_return[['checkbox','dataset_name','cancer_type','source','metastasis']]]
     if request.method == 'POST':
         gene_name = search.data['gene']
+        print(gene_name)
         fusion_name = search.data['fusion']
         if len(gene_name)>0:
-            return gene(gene_name)
+            row = dataset_info.loc[dataset_info['gene_name'] == gene_name]
+            row = [row[['gene_link','chromosome','start','end','strand','gene_name','exon_length']]]
+            return render_template('search_gene.html',form=search,
+                            table1=[t.to_html(classes='data',index=False,na_rep='',render_links=True, escape=False) for t in row])
         elif len(fusion_name)>0:
-            return fusion(fusion_name)
+            fusion_gene_1 = fusion_name.strip().split("_")[0]
+            fusion_gene_2 = fusion_name.strip().split("_")[1]
+            row = fusion_info.loc[(fusion_info['fusion_gene_1'] == fusion_gene_1) & (fusion_info['fusion_gene_2'] == fusion_gene_2)]
+            row = [row[['gene_link','chromosome','start','end','strand','gene_name','exon_length']]]
+            return render_template('search_gene.html',form=search,
+                            table2=[t.to_html(classes='data',index=False,na_rep='',render_links=True, escape=False) for t in row])
+        
         else:
             return render_template('search_gene.html',form=search)
     return render_template('search_gene.html',form=search)
@@ -259,5 +238,5 @@ def help():
 if __name__ == '__main__':
     # fusion("7SK_GARS")
     # gene("7SK")
-    dataset("GSE118389")
-    # app.run(threaded=True, port=5000)
+    # dataset("GSE118389")
+    app.run(threaded=True, port=5000)

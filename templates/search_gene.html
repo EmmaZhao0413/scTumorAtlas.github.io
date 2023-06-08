@@ -80,7 +80,7 @@
         <a class="navbar-brand-top" href="/search_dataset">
             <i class="fa fa-database" style="margin-right: 5px;"></i>
             Dataset</a>
-        <a class="navbar-brand-top" href="/gene">
+        <a class="navbar-brand-top" href="/search_gene">
             <i class="fa fa-search" style="margin-right: 5px;"></i>
             Gene</a>
         <a class="navbar-brand-top" href="/statistics">
@@ -107,14 +107,19 @@
     <div class="box">
         <div class="search">
             <input type="text" id="val" placeholder="Enter Gene Name">
-            <!-- <div class="search-container" id="val"  placeholder="Enter Gene Name">
-                {{ render_field_search(form.gene) }}
-                <button type="submit" class="btn btn-primary common-page-submit-btn">Search</button>
-            </div> -->
             <button type="submit" class="btn btn-primary common-page-submit-btn">Search</button>
         </div>
     </div>
 </form>
+
+{% if table1 %}
+<h3 id="result-title"> Return Genes </h3>
+<form method="post" id="results-page-table-container">
+    {% for table in table1 %}
+        {{table|safe}}
+    {% endfor %}
+</form>
+{% endif %}
 
 <h3>Input Fusion Name</h3>
 <form method="post" class="common-page-form">
@@ -125,6 +130,15 @@
         </div>
     </div>
 </form>
+
+{% if table2 %}
+<h3 id="result-title"> Return Fusions </h3>
+<form method="post" id="results-page-table-container">
+    {% for table in table2 %}
+        {{table|safe}}
+    {% endfor %}
+</form>
+{% endif %}
 </body>
 <script>
     var array = ["7SK","GARS"];
