@@ -23,9 +23,9 @@ config.init_cors(app)
 
 api = Api(app)
 df = pd.read_csv("/home/emmazhao/scTumorAtlas/data/fake.csv")#.set_index("dataset_name")
-dataset_info = pd.read_csv("/home/emmazhao/scTumorAtlas/data/general_table_for_all_datasets_with_reference_new_for_Emma_0527.csv")
-fusion_info = pd.read_csv('/home/emmazhao/scTumorAtlas/data/used_general_fusion_info_0529.csv')
-gene_info = pd.read_csv('/home/emmazhao/scTumorAtlas/data/gencode_v19_gene_info.csv')
+dataset_info = pd.read_csv("/home/emmazhao/scTumorAtlas/data/dataset_info_output.csv")
+fusion_info = pd.read_csv('/home/emmazhao/scTumorAtlas/data/fusion_info_output.csv')
+gene_info = pd.read_csv('/home/emmazhao/scTumorAtlas/data/gene_info_output.csv')
 
 @app.route("/", defaults={'path': ''})
 @app.route('/<path:path>')
@@ -46,8 +46,7 @@ def statistics_page():
     pos_vals = np.zeros((len(df),))
     idxs = [t[1] for t in sorted(list(zip(list(pos_vals),list(df.index))),key=lambda x:x[0],reverse=True)]
     tf = df.loc[idxs]
-    index = list(range(len(tf)))#list(tf.columns)
-    # tf.set_index('dataset_name')
+    index = list(range(len(tf)))
     print(tf.index)
     tf_return = tf.loc[index]
     tables = [tf_return[['checkbox','dataset_name','cancer_type','source','metastasis']]]
@@ -116,7 +115,6 @@ def search_dataset_cancer_type(cancer_type):
 
 @app.route('/dataset/<dataset_name>')
 def dataset(dataset_name):
-    # dataset_info = pd.read_csv('/home/emmazhao/scTumorAtlas/data/general_table_for_all_datasets_with_reference_new_for_Emma_0527.csv')
     dataset_info = dataset_info.T
     dataset_info.columns = dataset_info.iloc[0]
     dataset_info["info_type"] = dataset_info.index
