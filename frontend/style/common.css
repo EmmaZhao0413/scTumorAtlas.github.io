@@ -37,6 +37,16 @@ h3 {
 	color: rgba(8,8,106,1);
 	/* background-color: white; */
 }
+h4 {
+	font-family:'Segoe UI';
+	font-size:20px;
+	margin-left: 60px;
+	margin-bottom: 0px;
+	margin-top: 20px;
+	/* text-decoration:underline; */
+	color: rgba(8,8,106,1);
+	/* background-color: white; */
+}
 .common-page-heading-container {
 	text-align: center;
 	margin-top: 20px;
@@ -91,4 +101,9 @@ h3 {
 
 .common-page-form-container {
 	margin: 0px 0px;
+}
+
+.container {
+	padding-top: 20px;
+	padding-left: 20px;
 }

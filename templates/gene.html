@@ -1,6 +1,10 @@
 <!doctype html>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link href='https://fonts.googleapis.com/css?family=Fredoka One' rel='stylesheet'>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
 <link rel="stylesheet" type="text/css" href="../frontend/style/common.css">
 <link rel="stylesheet" type="text/css" href="../frontend/style/search.css">
 <style>
@@ -75,13 +79,42 @@
     <div>Strand: {{ strand }}</div>
     <div>Exon Length: {{ exon_length }}</div>
 </div>
-<h3>Fusion</h3>
+<h3>General Profiling</h3>
+<h4>Information in General</h4>
+<div class="container">
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#menu1">Cell Label Query</a></li>
+        <li><a data-toggle="tab" href="#menu2">GSEid Query</a></li>
+        <li><a data-toggle="tab" href="#menu3">Tumor Abbreviation Query</a></li>
+      </ul>
+    
+      <div class="tab-content">
+        <div id="menu1" class="tab-pane fade in active">
+          <h3>Cell Label Query</h3>
+          <img src= {{cell_label_plot}} class="img-fluid"/>
+        </div>
+        <div id="menu2" class="tab-pane fade">
+          <h3>GSEid Query</h3>
+          <img src= {{gseid_plot}} class="img-fluid"/>
+        </div>
+        <div id="menu3" class="tab-pane fade">
+          <h3>Tumor Abbreviation Query</h3>
+          <img src= {{tumor_plot}} class="img-fluid"/>
+        </div>
+      </div>
+</div>
+
+<h4>Information in Each Dataset</h4>
+<img src= {{plot1}} class="img-fluid"/>
+
+
+<h3>Related Fusion</h3>
 <form id="results-page-table-container">
     {% for table in table1 %}
         {{table|safe}}
     {% endfor %}
 </form>
-<h3>Related Plots</h3>
+<h3>Correlation</h3>
 <img src= {{plot1}} class="img-fluid"/>
 
 </body>

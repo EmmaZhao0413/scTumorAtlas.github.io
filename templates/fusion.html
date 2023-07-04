@@ -1,6 +1,10 @@
 <!doctype html>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link href='https://fonts.googleapis.com/css?family=Fredoka One' rel='stylesheet'>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
 <link rel="stylesheet" type="text/css" href="../frontend/style/common.css">
 <link rel="stylesheet" type="text/css" href="../frontend/style/search.css">
 <style>
@@ -8,6 +12,11 @@
       margin: 0;
     }
     h3 {
+        /* background-color: rgba(8,8,106,0.3); */
+        text-align: left;
+        margin-bottom: 0px;
+    }
+    h4 {
         /* background-color: rgba(8,8,106,0.3); */
         text-align: left;
         margin-bottom: 0px;
@@ -75,14 +84,55 @@
     <div>LeftBreakDinuc: {{ LeftBreakDinuc }}</div>
     <div>RightBreakDinuc: {{ RightBreakDinuc }}</div>
 </div>
-<h3>Gene</h3>
+
+<h3>General Profiling</h3>
+<h4>Information in General</h4>
+<div class="container">
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#menu1">Cell Label Query</a></li>
+        <li><a data-toggle="tab" href="#menu2">GSEid Query</a></li>
+        <li><a data-toggle="tab" href="#menu3">Tumor Abbreviation Query</a></li>
+      </ul>
+    
+      <div class="tab-content">
+        <div id="menu1" class="tab-pane fade in active">
+          <h3>Cell Label Query</h3>
+          <img src= {{cell_label_plot}} class="img-fluid"/>
+        </div>
+        <div id="menu2" class="tab-pane fade">
+          <h3>GSEid Query</h3>
+          <img src= {{gseid_plot}} class="img-fluid"/>
+        </div>
+        <div id="menu3" class="tab-pane fade">
+          <h3>Tumor Abbreviation Query</h3>
+          <img src= {{tumor_plot}} class="img-fluid"/>
+        </div>
+      </div>
+</div>
+<h4>Information in Each Dataset</h4>
+
+<h3>Related Gene</h3>
 <form id="results-page-table-container">
     {% for table in table1 %}
         {{table|safe}}
     {% endfor %}
 </form>
-<h3>Related Plots</h3>
-<img src= {{plot}} class="img-fluid"/>
+
+<h3>Correlation</h3>
+
+<div class="container">
+    <img src= {{correlation}} class="img-fluid"/>
+</div>
+
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">
+</script>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js">
+</script>
 
 </body>
 </doctype>

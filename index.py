@@ -73,7 +73,7 @@ def search_dataset_page():
     index = list(range(len(tf)))
     tf_return = tf.loc[index]
     line_num = len(tf_return)
-    tables = [tf_return[['dataset_name','cancer_type','source','metastasis','alteration_type','gene']]]
+    tables = [tf_return[['dataset_id','Cancer type','source','metastatic_or_primary']]]
     total_num = len(dataset_info.index)
     if request.method == 'POST':
         gene = search.data['gene']
@@ -83,12 +83,12 @@ def search_dataset_page():
         if gene!="Any":
             tf = tf[tf['gene'] == gene]
         if cancer_type!="Any":
-            tf = tf[tf['cancer_type'] == cancer_type]
+            tf = tf[tf['Cancer type'] == cancer_type]
         if source!="Any":
-            tf = tf[tf['source'] == source]
+            tf = tf[tf['tumor_name'] == source]
         if metastasis!="Any":
-            tf = tf[tf['metastasis'] == metastasis]
-        tables = [tf[['dataset_name','cancer_type','source','metastasis','gene']]]
+            tf = tf[tf['metastatic_or_primary'] == metastasis]
+        tables = [tf[['dataset_id','Cancer type','source','metastatic_or_primary']]]
         print(line_num)
         return render_template('search_dataset.html',table1=[t.to_html(classes='data',index=False,na_rep='',render_links=True, escape=False) for t in tables],
             num=len(tables[0]), form=search, total_num=total_num)
@@ -115,6 +115,7 @@ def search_dataset_cancer_type(cancer_type):
 
 @app.route('/dataset/<dataset_name>')
 def dataset(dataset_name):
+    dataset_info = pd.read_csv("/home/emmazhao/scTumorAtlas/data/dataset_info_output.csv")
     dataset_info = dataset_info.T
     dataset_info.columns = dataset_info.iloc[0]
     dataset_info["info_type"] = dataset_info.index
@@ -146,7 +147,7 @@ def dataset(dataset_name):
 
 @app.route('/fusion/<fusion_name>')
 def fusion(fusion_name):
-    dataset_info = pd.read_csv('/home/emmazhao/scTumorAtlas/data/used_general_fusion_info_0529.csv')
+    dataset_info = pd.read_csv('/home/emmazhao/scTumorAtlas/data/fusion_info_output.csv')
     fusion_gene_1 = fusion_name.strip().split("_")[0]
     fusion_gene_2 = fusion_name.strip().split("_")[1]
     row = dataset_info.loc[(dataset_info['fusion_gene_1'] == fusion_gene_1) & (dataset_info['fusion_gene_2'] == fusion_gene_2)]
@@ -163,7 +164,20 @@ def fusion(fusion_name):
     RightGene = row["RightGene"].values.item().strip().split("^")[1]
     gene_info = pd.read_csv('/home/emmazhao/scTumorAtlas/data/gencode_v19_gene_info.csv')
     row = gene_info.loc[((gene_info['gene_id'] == LeftGene) | (gene_info['gene_id'] == RightGene))]
-    row = [row[['gene_link','chromosome','start','end','strand','gene_name','exon_length']]]
+    print(row)
+    row = [row[['gene_id','chromosome','start','end','strand','gene_name','exon_length']]]
+
+
+    general_plots = []
+    name = fusion_gene_1+"--"+fusion_gene_2
+    general_plots_folder = os.listdir("./frontend/graph/"+name+"/")
+    for f in general_plots_folder:
+        general_plots.append("../frontend/graph/"+name+"/"+f)
+    cell_label_plot = general_plots[0]
+    gseid_plot = general_plots[1]
+    tumor_plot = general_plots[2]
+
+    correlation = "../frontend/graph/correlation/"+name+"_pan_dataset_bubble_plot.jpg"
     return render_template('fusion.html',
                             fusion_name=fusion_name,
                             Position_from=Position_from,
@@ -172,6 +186,10 @@ def fusion(fusion_name):
                             LeftBreakDinuc=LeftBreakDinuc,
                             RightBreakDinuc=RightBreakDinuc,
                             plot=plot,
+                            cell_label_plot=cell_label_plot,
+                            gseid_plot=gseid_plot,
+                            tumor_plot=tumor_plot,
+                            correlation=correlation,
                             table1=[t.to_html(classes='data',index=False,na_rep='',render_links=True, escape=False) for t in row])
 
 
@@ -185,12 +203,11 @@ def gene(gene_id):
     end = row["end"].values.item()
     strand = row["strand"].values.item()
     exon_length = row["exon_length"].values.item()
-    print(gene_name)
 
-    fusion_info = pd.read_csv('/home/emmazhao/scTumorAtlas/data/used_general_fusion_info_0529.csv')
+    fusion_info = pd.read_csv('/home/emmazhao/scTumorAtlas/data/fusion_info_output.csv')
     row = fusion_info.loc[((fusion_info['fusion_gene_1'] == gene_name) | (fusion_info['fusion_gene_2'] == gene_name))]
     print(row)
-    row = [row[['#FusionName','SpliceType','LeftGene','RightGene']]]
+    row = [row[['fusion_link','#FusionName','SpliceType','LeftGene','RightGene']]]
     # row = list(row["#FusionName"].values)
     plot1 ="../frontend/graph/plot3.png"
     return render_template('gene.html',
@@ -234,7 +251,7 @@ def help():
     return render_template('help.html')
 
 if __name__ == '__main__':
-    # fusion("7SK_GARS")
+    fusion("ALDOA_ALDOB")
     # gene("7SK")
     # dataset("GSE118389")
     app.run(threaded=True, port=5000)

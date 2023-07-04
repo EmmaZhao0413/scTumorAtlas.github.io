@@ -1,8 +1,0 @@
-Raw cell number,228
-#Cells with > 10000.0 reads,219
-#Cells with < 30.0% MT genes expression,224
-#Cells with > 3 average expression level of housekeeping genes,228
-#Cells with > 200 gene expressed,228
-#Cells after filtering,215
-Raw gene number,57820
-#Genes expressed in > 3 cells,29922
